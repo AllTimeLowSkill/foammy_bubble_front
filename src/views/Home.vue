@@ -1,18 +1,45 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="block">
+    <Caruosel />
+    <div class="block">
+      <span class="title">Товары</span>
+    </div>
+    <div class="block grid-wrapper">
+      <Card v-for="(el, idx) in products" :key="idx" :product="el" />
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import { mapGetters, mapActions } from "vuex";
+import Card from "../components/Card.vue";
+import Caruosel from "../components/Carusel.vue";
 export default {
-  name: 'Home',
+  name: "Home",
+  computed: {
+    ...mapGetters({
+      products: "products",
+    }),
+  },
   components: {
-    HelloWorld
-  }
-}
+    Card,
+    Caruosel,
+  },
+  mounted() {
+    this.fetchProducts();
+  },
+  methods: {
+    ...mapActions({
+      fetchProducts: "fetchProducts",
+    }),
+  },
+};
 </script>
+
+<style lang="scss" scoped>
+.grid-wrapper {
+  padding-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+</style>
